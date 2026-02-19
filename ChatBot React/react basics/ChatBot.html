@@ -1,0 +1,214 @@
+<!doctype html>
+<html>
+  <head>
+    <title>ChatBot</title>
+
+    <style>
+      body{
+        padding: 0px;
+        font-family: Arial;
+      }
+
+      .input-container{
+        display: flex;
+        margin: 20px;
+        margin-bottom: 100px;
+      }
+
+      .input-text{
+        flex-grow: 1;
+        font-size: 12pt;
+        padding: 10px 20px;
+        border-radius: 10px;
+      }
+
+      .send-button{
+        background-color: rgb(25, 135, 84);
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        margin-left: 10px;
+        border-radius: 10px;
+        font-size: 12pt;
+        cursor: pointer;
+      }
+
+      .app-container{
+        max-width: 800px;
+        display: flex;
+        flex-direction: column;
+        margin-left: auto;
+        margin-right: auto;
+        height: 90vh;
+      }
+
+      .message-container{
+        display : flex;
+        flex-direction: column;
+        overflow: scroll;
+        scrollbar-width: none;
+        flex-grow: 1;
+      }
+
+      .user-text-view{
+        display: flex;
+        justify-content: end;
+        align-items: start;
+      }
+      .robot-text-view{
+        align-items: start;
+        display: flex;
+      }
+      
+      .text-container{
+        background-color: rgb(230, 230, 230);
+        margin: 10px;
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-size: 12pt;
+        max-width: 300px;
+      }
+      .icon{
+        margin: 5px;
+      }
+
+      
+
+    </style>
+
+  </head>
+  <body>
+    <div class="js-container"></div>
+
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/chatbot.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script type="text/babel">
+
+      // Function to create a input field and send button for chat messages
+      function ChatInput({chatMessages, setChatMessages}) {
+        const [inputText,setInputText] = React.useState('');
+        function saveInputText(event){
+          setInputText(event.target.value);
+        }
+        // function to sent push new input message into the array chatMessages
+        function sendMessage(){
+          const newChatMessage=[
+            ...chatMessages,
+            {
+              message : inputText,
+              sender : "user",
+              key : crypto.randomUUID()
+            }
+          ]
+          setChatMessages(newChatMessage);
+          const response=Chatbot.getResponse(inputText);
+          setChatMessages([
+            ...newChatMessage,
+            {
+              message : response,
+              sender : "robot",
+              key : crypto.randomUUID()
+            }
+          ]);
+          setInputText("");
+        }
+        // return the input field and the send button
+        return (
+          <div className="input-container">
+            <input
+              type="text"
+              placeholder="Send a message to ChatBot"
+              size="30"
+              onChange={saveInputText}
+              value={inputText}
+              className="input-text"
+            />   
+            <button
+              onClick={sendMessage}
+              className="send-button"
+            >Send
+            </button>
+          </div>
+        );
+      }
+
+      // function to create one chat message component of sender/robot
+      function ChatMessage( {message,sender} ) {
+
+        return (
+          <div 
+            className = {
+                  sender==='user'
+                    ? 'user-text-view'
+                    : 'robot-text-view'
+                }>
+            { 
+              sender === 'robot' && 
+              <img src="robot.png" width="50px" className='icon' /> 
+            }
+            <div className="text-container">
+              { message }
+            </div>
+            { 
+              sender === 'user' && 
+              <img src="user.png" width="50px" className='icon' /> 
+            }
+            
+          </div>
+            
+        )
+
+      }
+      
+      // function to create and return all the chat messages between user and robot
+      function ChatMessages({chatMessages}) {
+        const currentMessageRef=React.useRef(null)
+        React.useEffect(()=>{
+          const current=currentMessageRef.current;
+          if (current){
+            current.scrollTop=current.scrollHeight;
+          }
+        },[chatMessages])
+        return (
+          <div className="message-container"
+          ref={currentMessageRef}>
+            {chatMessages.map(( chatMessage )=>{
+              return(
+                <ChatMessage 
+                message = { chatMessage.message }
+                sender = { chatMessage.sender }
+                key = { chatMessage.key }
+                />
+              );
+            })}
+          </div>
+        );
+      }
+
+      // App function to wrap all the component inside for rendering
+      function App () {
+        const [chatMessages, setChatMessages] = React.useState([]);
+
+        // wrap all the components to be rendered inside return 
+        return (
+          <div className="app-container">
+            <ChatInput
+              chatMessages={chatMessages}
+              setChatMessages={setChatMessages}
+            />
+            <ChatMessages 
+            chatMessages={chatMessages}
+            />
+            </div>
+        )
+      }
+
+      const container = document.querySelector(".js-container");
+      ReactDOM.createRoot(container).render(<App />);
+    </script>
+  </body>
+</html>

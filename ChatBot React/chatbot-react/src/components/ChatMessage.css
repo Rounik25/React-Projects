@@ -1,0 +1,21 @@
+.user-text-view{
+  display: flex;
+  justify-content: end;
+  align-items: start;
+}
+.robot-text-view{
+  align-items: start;
+  display: flex;
+}
+
+.text-container{
+  background-color: rgb(230, 230, 230);
+  margin: 10px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 12pt;
+  max-width: 300px;
+}
+.icon{
+  margin: 5px;
+}
