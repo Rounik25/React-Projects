@@ -1,8 +1,8 @@
 import "./HomePage.css";
 import axios from 'axios';
 import { useEffect, useState } from "react";
-import { Header } from "../../components/Header";
-import { ProductGrid } from "./ProductsGrid";
+import { Header } from "../components/Header/Header";
+import { ProductGrid } from "../components/home/ProductsGrid";
 
 export function HomePage({cart}) {
     const [products,setProducts]=useState([]);
