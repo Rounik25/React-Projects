@@ -1,7 +1,19 @@
 import dayjs from "dayjs";
 import { Fragment } from "react";
+import { useNavigate } from "react-router";
+
 
 export function OrderDetailsGrid({order}) {
+    const navigate = useNavigate();
+
+    function trackOrder(orderProduct){
+        navigate('/tracking',{
+            state: {
+                data : orderProduct
+            }
+        })
+    }
+
     return (
         <div className="order-details-grid">
             {order.products.map((orderProduct) => {
@@ -19,7 +31,7 @@ export function OrderDetailsGrid({order}) {
                                 Arriving on: {dayjs(orderProduct.product.estimatedDeliveryTimeMs).format("MMMM D")}
                             </div>
                             <div className="product-quantity">
-                                Quantity: {orderProduct.product.quantity}
+                                Quantity: {orderProduct.quantity}
                             </div>
                             <button className="buy-again-button button-primary">
                                 <img className="buy-again-icon" src="images/icons/buy-again.png" />
@@ -28,11 +40,15 @@ export function OrderDetailsGrid({order}) {
                         </div>
 
                         <div className="product-actions">
-                            <a href="/tracking">
-                                <button className="track-package-button button-secondary">
+                            <div>
+                                <button className="track-package-button button-secondary"
+                                    onClick={async () => {
+                                        trackOrder(orderProduct);
+                                    }}
+                                >
                                     Track package
                                 </button>
-                            </a>
+                            </div>
                         </div>
                     </Fragment>
                 )
