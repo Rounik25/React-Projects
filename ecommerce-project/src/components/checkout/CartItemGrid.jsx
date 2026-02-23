@@ -7,7 +7,7 @@ export function CartItemGrid({deliveryOptions,cartItem,loadCart}) {
             <img className="product-image"
                 src={cartItem.product.image} />
 
-            <CartItemDetails cartItem={cartItem} />
+            <CartItemDetails cartItem={cartItem} loadCart={loadCart} />
 
             <DeliveryOptions 
                 deliveryOptions={deliveryOptions} 
