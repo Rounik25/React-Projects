@@ -1,7 +1,7 @@
 import { CartItemDetails } from "./CartItemDetails";
 import { DeliveryOptions } from "./DeliveryOptions";
 
-export function CartItemGrid({deliveryOptions,cartItem}) {
+export function CartItemGrid({deliveryOptions,cartItem,loadCart}) {
     return (
         <div className="cart-item-details-grid">
             <img className="product-image"
@@ -11,7 +11,8 @@ export function CartItemGrid({deliveryOptions,cartItem}) {
 
             <DeliveryOptions 
                 deliveryOptions={deliveryOptions} 
-                cartItem={cartItem} 
+                cartItem={cartItem}
+                loadCart={loadCart} 
             />
             
         </div>

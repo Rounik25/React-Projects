@@ -1,7 +1,7 @@
 import { CartItemContainer } from "./CartItemContainer";
 
 
-export function OrderSummary({deliveryOptions, cart}) {
+export function OrderSummary({deliveryOptions, cart, loadCart}) {
     return (
         <div className="order-summary">
             {deliveryOptions.length > 0 && cart.map((cartItem) => {
@@ -17,6 +17,7 @@ export function OrderSummary({deliveryOptions, cart}) {
                         selectedDeliveryOption={selectedDeliveryOption} 
                         cartItem={cartItem} 
                         deliveryOptions={deliveryOptions} 
+                        loadCart={loadCart}
                     />
                 );
             })}

@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { CartItemGrid } from "./CartItemGrid";
 
-export function CartItemContainer({selectedDeliveryOption,cartItem,deliveryOptions}) {
+export function CartItemContainer({selectedDeliveryOption,cartItem,deliveryOptions,loadCart}) {
     return (
         <div key={cartItem.productId} className="cart-item-container">
             <div className="delivery-date">
@@ -11,6 +11,7 @@ export function CartItemContainer({selectedDeliveryOption,cartItem,deliveryOptio
             <CartItemGrid 
                 deliveryOptions={deliveryOptions} 
                 cartItem={cartItem} 
+                loadCart={loadCart}
             />
         </div>
     );
